@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.libs.Interfaces.Methods;
+import com.example.libs.Model.ProductListResponse;
 import com.example.libs.Model.RoomListResponse;
 import com.example.libs.RetrofitClient;
 
@@ -40,21 +41,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void loadData(){
-        List<String> roomList = new ArrayList<String>();
+        List<String> productList = new ArrayList<String>();
         Methods methods = RetrofitClient.getRetrofitInstance().create(Methods.class);
-        Call<RoomListResponse> call = methods.getRoomList();
-        call.enqueue(new Callback<RoomListResponse>() {
+        Call<ProductListResponse> call = methods.getProductList();
+        call.enqueue(new Callback<ProductListResponse>() {
             @Override
-            public void onResponse(Call<RoomListResponse> call, Response<RoomListResponse> response) {
+            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
                 for(int i = 0; i< response.body().data.size();i++){
-                    roomList.add(response.body().data.get(i).getName());
+                    productList.add(response.body().data.get(i).getName());
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, roomList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, productList);
                 listview.setAdapter(adapter);
             }
 
             @Override
-            public void onFailure(Call<RoomListResponse> call, Throwable t) {
+            public void onFailure(Call<ProductListResponse> call, Throwable t) {
                 Log.v("event", t.getMessage());
             }
         });

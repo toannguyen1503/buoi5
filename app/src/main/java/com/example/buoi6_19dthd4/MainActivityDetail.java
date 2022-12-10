@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.libs.Interfaces.Methods;
+import com.example.libs.Model.Product;
 import com.example.libs.Model.ResponseBase;
 import com.example.libs.Model.Room;
 import com.example.libs.Model.RoomListResponse;
@@ -18,7 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivityDetail extends AppCompatActivity {
-    EditText txtName, txtCode;
+    EditText txtName, txtPrice, txtPictureUrl, txtGroup;
     Methods methods = RetrofitClient.getRetrofitInstance().create(Methods.class);
 
     @Override
@@ -26,14 +27,21 @@ public class MainActivityDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_detail);
         txtName = findViewById(R.id.txtName);
-        txtCode = findViewById(R.id.txtCode);
+        txtPrice = findViewById(R.id.txtPrice);
+        txtPictureUrl = findViewById(R.id.txtPictureUrl);
+        txtGroup = findViewById(R.id.txtGroup);
+//        txtCode = findViewById(R.id.txtCode);
     }
 
     public void addNewRoom(View view) {
-        Room r = new Room();
-        r.setName(txtName.getText().toString());
-        r.setCode(txtCode.getText().toString());
-        Call<ResponseBase> call = methods.insertRoom(r);
+        Product product = new Product();
+        product.setName(txtName.getText().toString());
+
+//        product.setPrice(txtCode.getText().toString());
+        product.setPrice(Integer.valueOf(txtPrice.getText().toString()));
+        product.setPictureUrl(txtPictureUrl.getText().toString());
+        product.setGroup(txtGroup.getText().toString());
+        Call<ResponseBase> call = methods.insertProduct(product);
         call.enqueue(new Callback<ResponseBase>() {
             @Override
             public void onResponse(Call<ResponseBase> call, Response<ResponseBase> response) {
